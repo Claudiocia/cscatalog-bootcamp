@@ -2,6 +2,7 @@ package com.claudiosouzadev.cscatalog.services;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.claudiosouzadev.cscatalog.dto.CategoryDTO;
 import com.claudiosouzadev.cscatalog.entities.Category;
 import com.claudiosouzadev.cscatalog.repositories.CategoryRepository;
+import com.claudiosouzadev.cscatalog.services.excepitions.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -24,7 +26,16 @@ public class CategoryService {
 		 
 		 return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
 		 
-	
 	}
+
+	@Transactional(readOnly = true)
+	public CategoryDTO findById(Long id) {
+		Optional<Category> opt = repository.findById(id);
+		Category entity = opt.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
+		
+		return new CategoryDTO(entity); 
+	}
+	
+	
 	
 }

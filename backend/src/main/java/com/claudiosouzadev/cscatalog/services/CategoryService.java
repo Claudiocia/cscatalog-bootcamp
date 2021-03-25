@@ -5,14 +5,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.claudiosouzadev.cscatalog.dto.CategoryDTO;
 import com.claudiosouzadev.cscatalog.entities.Category;
 import com.claudiosouzadev.cscatalog.repositories.CategoryRepository;
-import com.claudiosouzadev.cscatalog.services.excepitions.EntityNotFoundException;
+import com.claudiosouzadev.cscatalog.services.exceptions.DatabaseException;
+import com.claudiosouzadev.cscatalog.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class CategoryService {
@@ -31,7 +36,7 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
 		Optional<Category> opt = repository.findById(id);
-		Category entity = opt.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
+		Category entity = opt.orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada"));
 		
 		return new CategoryDTO(entity); 
 	}
@@ -43,6 +48,31 @@ public class CategoryService {
 		entity = repository.save(entity);
 		
 		return new CategoryDTO(entity);
+	}
+
+	@Transactional
+	public CategoryDTO update(Long id, CategoryDTO dto) {
+		try {
+			Category entity = repository.getOne(id);
+			entity.setName(dto.getName());
+			entity = repository.save(entity);
+			return new CategoryDTO(entity);
+		}catch(EntityNotFoundException e){
+			throw new ResourceNotFoundException("Id not found " + id);
+		}
+	}
+
+	public void delete(Long id) {
+		try {
+			repository.deleteById(id);
+		}
+		catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id not found " + id);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DatabaseException("Integrity violation");
+		}
+
 	}
 	
 	

@@ -3,7 +3,7 @@ package com.claudiosouzadev.cscatalog.resources.exceptions;
 import java.io.Serializable;
 import java.time.Instant;
 
-public class StandartError implements Serializable {
+public class StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Instant timestamp;
@@ -12,7 +12,7 @@ public class StandartError implements Serializable {
 	private String message;
 	private String path;
 
-	public StandartError() {
+	public StandardError() {
 	}
 
 	public Instant getTimestamp() {

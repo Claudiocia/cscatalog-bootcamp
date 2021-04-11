@@ -1,0 +1,40 @@
+.catalog-container {
+  margin-top: 26px;
+  padding-left: 40px;
+  padding-right: 50px;
+  margin-bottom: 40px;
+}
+
+.title-catalog {
+  font-size: 20px;
+  line-height: 33px;
+  letter-spacing: -0.015em;
+  margin-top: 12px;
+}
+
+.box-search {
+  background: #FFFFFF;
+  height: 60px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding-left: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.area-filtro {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 25px;
+  letter-spacing: -0.015em;
+  color: #9E9E9E;
+  mix-blend-mode: normal;
+}
+
+.catalog-products {
+  margin-top: 43px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 250px);
+  grid-gap: 33px 20px;
+  justify-content: space-between;
+}
